@@ -36,6 +36,7 @@ TABLE = """
 
 PATTERN = re.compile(r"\|\s+([A-Z])\s+\|\s+(\d+)\s+\|(.+)")
 MULTI_DEAL_PATTERN = re.compile(r"(\d)([A-Z]) for (\d+)")
+GET_ONE_PATTERN = re.compile(r"(\d)([A-Z]) get one ([A-Z]) free")
 
 
 def get_tables(s: str):
@@ -62,6 +63,9 @@ def get_tables(s: str):
                     if x["sku"] not in multi:
                         multi[x["sku"]] = []
                     multi[x["sku"]].append((int(m.group(1)), int(m.group(3))))
+    # reorder the multi deals so that the highest count is first
+    for k, v in multi.items():
+        multi[k] = sorted(v, key=lambda x: x[0], reverse=True)
 
     table = {x["sku"]: x["price"] for x in out}
     print(multi)
@@ -129,5 +133,6 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
