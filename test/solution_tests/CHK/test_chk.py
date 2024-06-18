@@ -40,6 +40,8 @@ class TestCheckout:
         assert checkout_solution.checkout(skus) == 0
 
     def test_2f_get_free_f(self):
-        skus = "FF"
-        assert checkout_solution.checkout(skus) == 10
+        assert checkout_solution.checkout("F" * 2) == 20
+        assert checkout_solution.checkout("F" * 4) == 30
+        assert checkout_solution.checkout("F" * 6) == 40
+
 

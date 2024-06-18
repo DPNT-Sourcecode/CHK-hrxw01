@@ -21,7 +21,7 @@ def checkout(skus):
     counter["B"] -= counter["E"] // 2
 
     # for every 2 F, get an F free
-    counter["F"] -= counter["F"] // 2
+    counter["F"] -= counter["F"] // 3
 
     # now process the multi-prices
     # to work out a price for a letter with deals, apply the deal price with highest number of items
@@ -42,5 +42,6 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
