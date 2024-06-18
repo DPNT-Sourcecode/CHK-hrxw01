@@ -51,4 +51,6 @@ class TestCheckout:
 
     def test_3n_get_free_m(self):
         assert checkout_solution.checkout("NNNM") == 120
+        assert checkout_solution.checkout("NNN") == 120
+
 
