@@ -34,16 +34,15 @@ TABLE = """
 +------+-------+------------------------+
 """
 
+PATTERN = re.compile(r"\|\s+([A-Z])\s+\|\s+(\d+)\s+\|(.+)")
+
 
 def get_tables(s: str):
-    pattern = re.compile(r"([A-Z])\s+\|\s+(\d+)\s+\|(.+)")
     lines = s.strip().split("\n")
-
-    print(lines)
 
     out = []
     for line in lines:
-        m = pattern.match(line)
+        m = PATTERN.match(line)
         if m:
             out.append(
                 {
@@ -63,8 +62,6 @@ def checkout(skus):
     t = get_tables(TABLE)
 
     table = {x["sku"]: x["price"] for x in t}
-
-    print(table)
 
     multi = {
         "A": [(5, 200), (3, 130)],
@@ -119,6 +116,7 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
 
