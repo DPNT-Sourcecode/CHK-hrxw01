@@ -37,7 +37,7 @@ TABLE = """
 PATTERN = re.compile(r"\|\s+([A-Z])\s+\|\s+(\d+)\s+\|(.+)")
 MULTI_DEAL_PATTERN = re.compile(r"(\d)([A-Z]) for (\d+)")
 GET_ONE_PATTERN = re.compile(r"(\d)([A-Z]) get one ([A-Z]) free")
-GROUP_DISCOUNT_PATTERN = re.compile("buy any 3 of \(S,T,X,Y,Z\) for 45")
+GROUP_DISCOUNT_PATTERN = re.compile(r"buy any 3 of \(S,T,X,Y,Z\) for 45")
 
 
 def get_tables(s: str):
@@ -118,11 +118,12 @@ def checkout(skus):
         present_skus = sorted(present_skus, key=lambda x: price_table[x], reverse=True)
 
         num_groups = len(present_skus) // group["count"]
-        leftovers = present_skus[num_groups * group["count"] :]
-
+        print(num_groups)
         total += num_groups * group["price"]
-        for left in leftovers:
-            total += price_table[left]
+
+        # remove the skus that were used in the group discount
+        for sku in present_skus[: num_groups * group["count"]]:
+            counter[sku] -= 1
 
     # now process the multi-prices
     # to work out a price for a letter with deals, apply the deal price with highest number of items
@@ -161,12 +162,3 @@ def checkout(skus):
 
     # # for every 3 U, get a U free
     # counter["U"] -= counter.get("U", 0) // 4
-
-
-
-
-
-
-
-
-
