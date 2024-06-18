@@ -1,6 +1,16 @@
-from solutions.CHK import sum_solution
+from solutions.CHK import checkout_solution
 
 
 class TestCheckout:
     def test_chk(self):
-        assert sum_solution.compute(1, 2) == 3
+        skus = "A,B,C"
+        assert checkout_solution.checkout(skus) == 100
+
+    def test_deal_a(self):
+        skus = "A,A,A"
+        assert checkout_solution.checkout(skus) == 130
+
+    def test_invalid_sku(self):
+        skus = "A,B,C,D,E"
+        assert checkout_solution.checkout(skus) == -1
+
