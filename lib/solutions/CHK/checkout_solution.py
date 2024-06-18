@@ -35,7 +35,11 @@ def checkout(skus):
                 count -= deal_count
                 total += deal_price
 
+        if count > 0:
+            total += count * table[sku]
+
     return total
+
 
 
 
