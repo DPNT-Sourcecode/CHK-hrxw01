@@ -35,6 +35,7 @@ TABLE = """
 """
 
 PATTERN = re.compile(r"\|\s+([A-Z])\s+\|\s+(\d+)\s+\|(.+)")
+MULTI_DEAL_PATTERN = re.compile(r"(\d)([A-Z]) for (\d+)")
 
 
 def get_tables(s: str):
@@ -51,6 +52,16 @@ def get_tables(s: str):
                     "deal": m.group(3).strip(),
                 }
             )
+
+    multi = {}
+    for x in out:
+        if x["deal"]:
+            deals = x["deal"].split(",")
+            for deal in deals:
+                if m := MULTI_DEAL_PATTERN.match(deal.strip()):
+                    if x["sku"] not in multi:
+                        multi[x["sku"]] = []
+                    multi[x["sku"]].append((int(m.group(1)), int(m.group(3)))
 
     # todo maybe parse the deal out later
     return out
@@ -119,3 +130,4 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
