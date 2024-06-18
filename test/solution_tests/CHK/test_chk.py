@@ -55,5 +55,9 @@ class TestCheckout:
 
     def test_group_discount(self):
         assert checkout_solution.checkout("STX") == 45
-        assert checkout_solution.checkout("STXZ") == 65
-        assert checkout_solution.checkout("STXZYZ") == 85
+        assert (
+            checkout_solution.checkout("STXZ") == 62
+        )  # always favour the customer so discount most expensive item(s)
+        assert checkout_solution.checkout("STXZYZ") == 90
+        assert checkout_solution.checkout("XXXXXX") == 90
+

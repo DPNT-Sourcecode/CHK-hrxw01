@@ -82,7 +82,6 @@ def get_tables(s: str):
         multi[k] = sorted(v, key=lambda x: x[0], reverse=True)
 
     table = {x["sku"]: x["price"] for x in parsed_table}
-    print(get_one)
 
     # todo maybe parse the deal out later
     return table, multi, get_one
@@ -118,7 +117,6 @@ def checkout(skus):
         present_skus = sorted(present_skus, key=lambda x: price_table[x], reverse=True)
 
         num_groups = len(present_skus) // group["count"]
-        print(num_groups)
         total += num_groups * group["price"]
 
         # remove the skus that were used in the group discount
@@ -162,3 +160,4 @@ def checkout(skus):
 
     # # for every 3 U, get a U free
     # counter["U"] -= counter.get("U", 0) // 4
+
