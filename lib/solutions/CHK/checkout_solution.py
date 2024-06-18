@@ -6,7 +6,7 @@ from collections import Counter
 def checkout(skus):
     table = {"A": 50, "B": 30, "C": 20, "D": 15}
 
-    multi = {"A": [(5,  (3, 130)], "B": [(2, 45)]}
+    multi = {"A": [(5, 200), (3, 130)], "B": [(2, 45)]}
 
     # ..yep
     print(skus)
@@ -21,15 +21,21 @@ def checkout(skus):
     counter["B"] -= counter["E"] // 2
 
     # now process the multi-prices
+    # to work out a price for a letter with deals, apply the deal price with highest number of items
+    # then apply the deal price with the next highest number of items, and so on
 
-    # 3A is 130
-    total_a = (counter["A"] // 3) * 130 + (counter["A"] % 3) * table["A"]
+    total = 0
+    for sku, count in counter.items():
+        if sku not in multi:
+            total += count * table[sku]
+            continue
 
-    # 2B is 45
-    total_b = (counter["B"] // 2) * 45 + (counter["B"] % 2) * table["B"]
-
-    total = total_a + total_b + counter["C"] * table["C"] + counter["D"] * table["D"]
+        for deal_count, deal_price in multi[sku]:
+            while count >= deal_count:
+                count -= deal_count
+                total += deal_price
 
     return total
+
 
 
