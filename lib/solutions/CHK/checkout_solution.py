@@ -67,12 +67,12 @@ def get_tables(s: str):
                 if m := GET_ONE_PATTERN.match(deal.strip()):
                     source = m.group(2)
                     target = m.group(3)
-                    quantity = int(m.group(1)) + source == target
+                    quantity = int(m.group(1)) + int(source == target)
                     get_one.append(
                         {
-                            "source": m.group(2),
-                            "quantity": int(m.group(1)),
-                            "target": m.group(3) + ,
+                            "source": source,
+                            "target": target,
+                            "quantity": quantity,
                         }
                     )
     # reorder the multi deals so that the highest count is first
@@ -80,7 +80,7 @@ def get_tables(s: str):
         multi[k] = sorted(v, key=lambda x: x[0], reverse=True)
 
     table = {x["sku"]: x["price"] for x in out}
-    print(multi)
+    print(get_one)
 
     # todo maybe parse the deal out later
     return table, multi, get_one
@@ -107,21 +107,24 @@ def checkout(skus):
     if not set(counter.keys()).issubset(set(table.keys())):
         return -1
 
-    # first process free items
-    # for every 2 E, get a B free
-    counter["B"] -= counter.get("E", 0) // 2
+    for x in get_one:
+        counter[x["target"]] -= counter.get(x["source"], 0) // x["quantity"]
 
-    # for every 3 N, get an M free
-    counter["M"] -= counter.get("N", 0) // 3
+    # # first process free items
+    # # for every 2 E, get a B free
+    # counter["B"] -= counter.get("E", 0) // 2
 
-    # for every 3 R, get a Q free
-    counter["Q"] -= counter.get("R", 0) // 3
+    # # for every 3 N, get an M free
+    # counter["M"] -= counter.get("N", 0) // 3
 
-    # for every 2 F, get an F free
-    counter["F"] -= counter.get("F", 0) // 3
+    # # for every 3 R, get a Q free
+    # counter["Q"] -= counter.get("R", 0) // 3
 
-    # for every 3 U, get a U free
-    counter["U"] -= counter.get("U", 0) // 4
+    # # for every 2 F, get an F free
+    # counter["F"] -= counter.get("F", 0) // 3
+
+    # # for every 3 U, get a U free
+    # counter["U"] -= counter.get("U", 0) // 4
 
     # now process the multi-prices
     # to work out a price for a letter with deals, apply the deal price with highest number of items
@@ -145,6 +148,7 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
 
