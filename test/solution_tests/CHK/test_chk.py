@@ -16,4 +16,9 @@ class TestCheckout:
 
     def test_bad_case(self):
         skus = "aaBBB"
-        assert checkout_solution.checkout(skus) == 175
+        assert checkout_solution.checkout(skus) == -1
+
+    def test_empty(self):
+        skus = ""
+        assert checkout_solution.checkout(skus) == 0
+
