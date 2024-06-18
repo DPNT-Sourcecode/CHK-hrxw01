@@ -4,7 +4,7 @@ from collections import Counter
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    table = {"A": 50, "B": 30, "C": 20, "D": 15, "E": 40}
+    table = {"A": 50, "B": 30, "C": 20, "D": 15, "E": 40, "F": 10}
 
     multi = {"A": [(5, 200), (3, 130)], "B": [(2, 45)]}
 
@@ -21,6 +21,7 @@ def checkout(skus):
     counter["B"] -= counter["E"] // 2
 
     # for every 2 F, get an F free
+    counter["F"] -= counter["F"] // 2
 
     # now process the multi-prices
     # to work out a price for a letter with deals, apply the deal price with highest number of items
@@ -41,4 +42,5 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
