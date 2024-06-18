@@ -61,32 +61,31 @@ def get_tables(s: str):
                 if m := MULTI_DEAL_PATTERN.match(deal.strip()):
                     if x["sku"] not in multi:
                         multi[x["sku"]] = []
-                    multi[x["sku"]].append((int(m.group(1)), int(m.group(3)))
+                    multi[x["sku"]].append((int(m.group(1)), int(m.group(3))))
+
+    table = {x["sku"]: x["price"] for x in out}
+    print(multi)
 
     # todo maybe parse the deal out later
-    return out
+    return table, multi
 
 
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    t = get_tables(TABLE)
+    table, multi = get_tables(TABLE)
 
-    table = {x["sku"]: x["price"] for x in t}
-
-    multi = {
-        "A": [(5, 200), (3, 130)],
-        "B": [(2, 45)],
-        "H": [(10, 80), (5, 45)],
-        "K": [(2, 150)],
-        "P": [(5, 200)],
-        "Q": [(3, 80)],
-        "V": [(3, 130), (2, 90)],
-    }
+    # multi = {
+    #     "A": [(5, 200), (3, 130)],
+    #     "B": [(2, 45)],
+    #     "H": [(10, 80), (5, 45)],
+    #     "K": [(2, 150)],
+    #     "P": [(5, 200)],
+    #     "Q": [(3, 80)],
+    #     "V": [(3, 130), (2, 90)],
+    # }
 
     counter = Counter([*skus])
-
-    print(table)
 
     # validate skus
     if not set(counter.keys()).issubset(set(table.keys())):
@@ -130,4 +129,5 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
