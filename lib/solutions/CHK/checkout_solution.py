@@ -6,8 +6,9 @@ from collections import Counter
 def checkout(skus):
     table = {"A": 50, "B": 30, "C": 20, "D": 15}
 
-    # todo maybe this isnt the format...
-    counter = Counter(skus.split(","))
+    # ..yep
+    print(skus)
+    counter = Counter([*skus])
 
     # keys of counter should be a subset of table
     if not set(counter.keys()).issubset(set(table.keys())):
@@ -22,6 +23,3 @@ def checkout(skus):
     total = total_a + total_b + counter["C"] * table["C"] + counter["D"] * table["D"]
 
     return total
-
-
-
