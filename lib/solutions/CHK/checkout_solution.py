@@ -14,6 +14,10 @@ def checkout(skus):
     if not set(counter.keys()).issubset(set(table.keys())):
         return -1
 
+    # first process free items
+    # for every 2 E, get a B free
+    counter["B"] -= counter["E"] // 2
+
     # 3A is 130
     total_a = (counter["A"] // 3) * 130 + (counter["A"] % 3) * table["A"]
 
@@ -23,3 +27,4 @@ def checkout(skus):
     total = total_a + total_b + counter["C"] * table["C"] + counter["D"] * table["D"]
 
     return total
+
