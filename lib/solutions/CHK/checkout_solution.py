@@ -39,8 +39,3 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
-
-
-
-
-

@@ -38,6 +38,3 @@ class TestCheckout:
     def test_empty(self):
         skus = ""
         assert checkout_solution.checkout(skus) == 0
-
-
-
