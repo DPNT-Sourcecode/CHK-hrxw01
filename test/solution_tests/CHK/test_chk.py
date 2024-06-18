@@ -28,7 +28,7 @@ class TestCheckout:
         assert checkout_solution.checkout(skus) == 80
 
     def test_invalid_sku(self):
-        skus = "ABCDX"
+        skus = "ABCD123"
         assert checkout_solution.checkout(skus) == -1
 
     def test_bad_case(self):
@@ -43,3 +43,12 @@ class TestCheckout:
         assert checkout_solution.checkout("F" * 2) == 20
         assert checkout_solution.checkout("F" * 4) == 30
         assert checkout_solution.checkout("F" * 6) == 40
+
+    def test_3u_get_free_u(self):
+        assert checkout_solution.checkout("U" * 3) == 120
+        assert checkout_solution.checkout("U" * 4) == 120
+        assert checkout_solution.checkout("U" * 5) == 160
+
+    def test_3n_get_free_m(self):
+        assert checkout_solution.checkout("NNNM") == 120
+
