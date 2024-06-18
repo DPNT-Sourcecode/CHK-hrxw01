@@ -93,16 +93,6 @@ def get_tables(s: str):
 def checkout(skus):
     table, multi, get_one = get_tables(TABLE)
 
-    # multi = {
-    #     "A": [(5, 200), (3, 130)],
-    #     "B": [(2, 45)],
-    #     "H": [(10, 80), (5, 45)],
-    #     "K": [(2, 150)],
-    #     "P": [(5, 200)],
-    #     "Q": [(3, 80)],
-    #     "V": [(3, 130), (2, 90)],
-    # }
-
     counter = Counter([*skus])
 
     # validate skus
@@ -113,21 +103,9 @@ def checkout(skus):
     for x in get_one:
         counter[x["target"]] -= counter.get(x["source"], 0) // x["quantity"]
 
-    # # first process free items
-    # # for every 2 E, get a B free
-    # counter["B"] -= counter.get("E", 0) // 2
-
-    # # for every 3 N, get an M free
-    # counter["M"] -= counter.get("N", 0) // 3
-
-    # # for every 3 R, get a Q free
-    # counter["Q"] -= counter.get("R", 0) // 3
-
-    # # for every 2 F, get an F free
-    # counter["F"] -= counter.get("F", 0) // 3
-
-    # # for every 3 U, get a U free
-    # counter["U"] -= counter.get("U", 0) // 4
+    # to apply a group discount i can get all the skus in the group out
+    # order the skus by price
+    # take
 
     # now process the multi-prices
     # to work out a price for a letter with deals, apply the deal price with highest number of items
@@ -151,6 +129,23 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
+    # # first process free items
+    # # for every 2 E, get a B free
+    # counter["B"] -= counter.get("E", 0) // 2
+
+    # # for every 3 N, get an M free
+    # counter["M"] -= counter.get("N", 0) // 3
+
+    # # for every 3 R, get a Q free
+    # counter["Q"] -= counter.get("R", 0) // 3
+
+    # # for every 2 F, get an F free
+    # counter["F"] -= counter.get("F", 0) // 3
+
+    # # for every 3 U, get a U free
+    # counter["U"] -= counter.get("U", 0) // 4
+
 
 
 
