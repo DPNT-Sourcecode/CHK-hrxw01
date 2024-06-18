@@ -37,16 +37,17 @@ TABLE = """
 PATTERN = re.compile(r"\|\s+([A-Z])\s+\|\s+(\d+)\s+\|(.+)")
 MULTI_DEAL_PATTERN = re.compile(r"(\d)([A-Z]) for (\d+)")
 GET_ONE_PATTERN = re.compile(r"(\d)([A-Z]) get one ([A-Z]) free")
+GROUP_DISCOUNT_PATTERN = re.compile("buy any 3 of \(S,T,X,Y,Z\) for 45")
 
 
 def get_tables(s: str):
     lines = s.strip().split("\n")
 
-    out = []
+    parsed_table = []
     for line in lines:
         m = PATTERN.match(line)
         if m:
-            out.append(
+            parsed_table.append(
                 {
                     "sku": m.group(1),
                     "price": int(m.group(2)),
@@ -54,9 +55,10 @@ def get_tables(s: str):
                 }
             )
 
+    # parse the deals
     multi = {}
     get_one = []
-    for x in out:
+    for x in parsed_table:
         if x["deal"]:
             deals = x["deal"].split(",")
             for deal in deals:
@@ -79,7 +81,7 @@ def get_tables(s: str):
     for k, v in multi.items():
         multi[k] = sorted(v, key=lambda x: x[0], reverse=True)
 
-    table = {x["sku"]: x["price"] for x in out}
+    table = {x["sku"]: x["price"] for x in parsed_table}
     print(get_one)
 
     # todo maybe parse the deal out later
@@ -107,6 +109,7 @@ def checkout(skus):
     if not set(counter.keys()).issubset(set(table.keys())):
         return -1
 
+    # apply get_one deals
     for x in get_one:
         counter[x["target"]] -= counter.get(x["source"], 0) // x["quantity"]
 
@@ -148,6 +151,7 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
 
