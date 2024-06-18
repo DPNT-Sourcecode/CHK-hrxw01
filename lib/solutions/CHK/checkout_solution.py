@@ -34,10 +34,10 @@ TABLE = """
 +------+-------+---------------------------------+
 """
 
-PATTERN = re.compile(r"\|\s+([A-Z])\s+\|\s+(\d+)\s+\|(.+)")
-MULTI_DEAL_PATTERN = re.compile(r"(\d)([A-Z]) for (\d+)")
-GET_ONE_PATTERN = re.compile(r"(\d)([A-Z]) get one ([A-Z]) free")
-GROUP_DISCOUNT_PATTERN = re.compile(r"buy any 3 of \(S,T,X,Y,Z\) for 45")
+PATTERN = re.compile(r"\|\s+([A-Z])\s+\|\s+(\d+)\s+\|(.+)\|")
+MULTI_DEAL_PATTERN = re.compile(r"(\d+)([A-Z]) for (\d+)")
+GET_ONE_PATTERN = re.compile(r"(\d+)([A-Z]) get one ([A-Z]) free")
+GROUP_DISCOUNT_PATTERN = re.compile(r"buy any 3 of \(S,T,X,Y,Z\) for 45", re.MULTILINE)
 
 
 def get_tables(s: str):
@@ -63,7 +63,7 @@ def get_tables(s: str):
             deals = x["deal"].split(",")
             for deal in deals:
                 if x["sku"] == "H":
-                    print(deals)
+                    print(deal.strip())
                 if m := MULTI_DEAL_PATTERN.match(deal.strip()):
                     if x["sku"] not in multi:
                         multi[x["sku"]] = []
@@ -164,5 +164,6 @@ def checkout(skus):
 
     # # for every 3 U, get a U free
     # counter["U"] -= counter.get("U", 0) // 4
+
 
 
