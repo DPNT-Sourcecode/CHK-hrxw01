@@ -62,6 +62,8 @@ def get_tables(s: str):
         if x["deal"]:
             deals = x["deal"].split(",")
             for deal in deals:
+                if x["sku"] == "H":
+                    print(deals)
                 if m := MULTI_DEAL_PATTERN.match(deal.strip()):
                     if x["sku"] not in multi:
                         multi[x["sku"]] = []
@@ -80,6 +82,8 @@ def get_tables(s: str):
     # reorder the multi deals so that the highest count is first
     for k, v in multi.items():
         multi[k] = sorted(v, key=lambda x: x[0], reverse=True)
+
+    print(multi["H"])
 
     table = {x["sku"]: x["price"] for x in parsed_table}
 
@@ -160,4 +164,5 @@ def checkout(skus):
 
     # # for every 3 U, get a U free
     # counter["U"] -= counter.get("U", 0) // 4
+
 

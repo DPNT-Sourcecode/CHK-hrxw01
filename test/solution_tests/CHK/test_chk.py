@@ -61,3 +61,7 @@ class TestCheckout:
         assert checkout_solution.checkout("STXZYZ") == 90
         assert checkout_solution.checkout("XXXXXX") == 90
 
+    def test_h(self):
+        assert checkout_solution.checkout("HHHHHHHHHH") == 80
+
+
