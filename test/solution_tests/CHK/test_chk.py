@@ -43,5 +43,3 @@ class TestCheckout:
         assert checkout_solution.checkout("F" * 2) == 20
         assert checkout_solution.checkout("F" * 4) == 30
         assert checkout_solution.checkout("F" * 6) == 40
-
-
