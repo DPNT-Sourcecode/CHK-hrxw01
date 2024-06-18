@@ -91,12 +91,12 @@ def get_tables(s: str):
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    table, multi, get_one = get_tables(TABLE)
+    price_table, multi, get_one = get_tables(TABLE)
 
     counter = Counter([*skus])
 
     # validate skus
-    if not set(counter.keys()).issubset(set(table.keys())):
+    if not set(counter.keys()).issubset(set(price_table.keys())):
         return -1
 
     # apply get_one deals
@@ -109,19 +109,31 @@ def checkout(skus):
     # then count the remaining skus
     # add it all to the total
 
+    total = 0
+
     group_discounts = [{"count": 3, "skus": ["S", "T", "X", "Y", "Z"], "price": 45}]
+
+    for group in group_discounts:
+        present_skus = [sku for gsku in group["skus"] for sku in gsku * counter[gsku]]
+        present_skus = sorted(present_skus, key=lambda x: price_table[x], reverse=True)
+
+        num_groups = len(present_skus) // group["count"]
+        leftovers = present_skus[num_groups * group["count"] :]
+
+        total += num_groups * group["price"]
+        for left in leftovers:
+            total += price_table[left]
 
     # now process the multi-prices
     # to work out a price for a letter with deals, apply the deal price with highest number of items
     # then apply the deal price with the next highest number of items, and so on
 
-    total = 0
     for sku, count in counter.items():
         if count <= 0:
             continue
 
         if sku not in multi:
-            total += count * table.get(sku, 0)
+            total += count * price_table.get(sku, 0)
             continue
 
         for deal_count, deal_price in multi[sku]:
@@ -130,7 +142,7 @@ def checkout(skus):
                 total += deal_price
 
         if count > 0:
-            total += count * table[sku]
+            total += count * price_table[sku]
 
     return total
 
@@ -149,6 +161,7 @@ def checkout(skus):
 
     # # for every 3 U, get a U free
     # counter["U"] -= counter.get("U", 0) // 4
+
 
 
 
