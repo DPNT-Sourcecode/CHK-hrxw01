@@ -4,7 +4,7 @@ from collections import Counter
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    table = {"A": 50, "B": 30, "C": 20, "D": 15}
+    table = {"A": 50, "B": 30, "C": 20, "D": 15, "E": 40}
 
     multi = {"A": [(5, 200), (3, 130)], "B": [(2, 45)]}
 
@@ -39,6 +39,7 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
 

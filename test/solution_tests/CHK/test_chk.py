@@ -28,7 +28,7 @@ class TestCheckout:
         assert checkout_solution.checkout(skus) == 80
 
     def test_invalid_sku(self):
-        skus = "ABCDE"
+        skus = "ABCDX"
         assert checkout_solution.checkout(skus) == -1
 
     def test_bad_case(self):
@@ -38,5 +38,6 @@ class TestCheckout:
     def test_empty(self):
         skus = ""
         assert checkout_solution.checkout(skus) == 0
+
 
 
