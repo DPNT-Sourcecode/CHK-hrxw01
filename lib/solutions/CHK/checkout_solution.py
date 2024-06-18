@@ -1,5 +1,8 @@
 from collections import Counter
 
+def get_tables(s: str):
+    
+
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -42,6 +45,7 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
 
