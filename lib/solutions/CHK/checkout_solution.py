@@ -105,7 +105,11 @@ def checkout(skus):
 
     # to apply a group discount i can get all the skus in the group out
     # order the skus by price
-    # take
+    # apply the discount to groups of 3 until there are no more groups of 3
+    # then count the remaining skus
+    # add it all to the total
+
+    group_discounts = [{"count": 3, "skus": ["S", "T", "X", "Y", "Z"], "price": 45}]
 
     # now process the multi-prices
     # to work out a price for a letter with deals, apply the deal price with highest number of items
@@ -145,6 +149,7 @@ def checkout(skus):
 
     # # for every 3 U, get a U free
     # counter["U"] -= counter.get("U", 0) // 4
+
 
 
 
