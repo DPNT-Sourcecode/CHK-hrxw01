@@ -39,6 +39,8 @@ def get_tables(s: str):
     pattern = re.compile(r"([A-Z])\s+\|\s+(\d+)\s+\|(.+)")
     lines = s.strip().split("\n")
 
+    print(lines)
+
     out = []
     for line in lines:
         m = pattern.match(line)
@@ -62,6 +64,8 @@ def checkout(skus):
 
     table = {x["sku"]: x["price"] for x in t}
 
+    print(table)
+
     multi = {
         "A": [(5, 200), (3, 130)],
         "B": [(2, 45)],
@@ -74,25 +78,27 @@ def checkout(skus):
 
     counter = Counter([*skus])
 
+    print(table)
+
     # validate skus
     if not set(counter.keys()).issubset(set(table.keys())):
         return -1
 
     # first process free items
     # for every 2 E, get a B free
-    counter["B"] -= counter["E"] // 2
+    counter["B"] -= counter.get("E", 0) // 2
 
     # for every 3 N, get an M free
-    counter["M"] -= counter["N"] // 3
+    counter["M"] -= counter.get("N", 0) // 3
 
     # for every 3 R, get a Q free
-    counter["Q"] -= counter["R"] // 3
+    counter["Q"] -= counter.get("R", 0) // 3
 
     # for every 2 F, get an F free
-    counter["F"] -= counter["F"] // 3
+    counter["F"] -= counter.get("F", 0) // 3
 
     # for every 3 U, get a U free
-    counter["U"] -= counter["U"] // 4
+    counter["U"] -= counter.get("U", 0) // 4
 
     # now process the multi-prices
     # to work out a price for a letter with deals, apply the deal price with highest number of items
@@ -101,7 +107,7 @@ def checkout(skus):
     total = 0
     for sku, count in counter.items():
         if sku not in multi:
-            total += count * table[sku]
+            total += count * table.get(sku, 0)
             continue
 
         for deal_count, deal_price in multi[sku]:
@@ -113,5 +119,6 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
