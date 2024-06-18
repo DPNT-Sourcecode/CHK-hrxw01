@@ -51,37 +51,50 @@ def get_tables(s: str):
                 }
             )
 
+    # todo maybe parse the deal out later
     return out
 
 
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
+    counter = Counter([*skus])
+
+    # validate skus
+    if not set(counter.keys()).issubset(set(table.keys())):
+        return -1
+
     t = get_tables(TABLE)
 
     table = [{x["sku"]: x["price"]} for x in t]
 
-    multi = {"A": [(5, 200), (3, 130)], "B": [(2, 45)]}
-
-    # ..yep
-    print(skus)
-    counter = Counter([*skus])
-
-    # keys of counter should be a subset of table
-    if not set(counter.keys()).issubset(set(table.keys())):
-        return -1
+    multi = {
+        "A": [(5, 200), (3, 130)],
+        "B": [(2, 45)],
+        "H": [(10, 80), (5, 45)],
+        "K": [(2, 150)],
+        "P": [(5, 200)],
+        "Q": [(3, 80)],
+        "V": [(3, 130), (2, 90)],
+    }
 
     # first process free items
     # for every 2 E, get a B free
     counter["B"] -= counter["E"] // 2
 
+    # for every 3 N, get an M free
+    counter["M"] -= counter["N"] // 3
+
+    # for every 3 R, get a Q free
+    counter["Q"] -= counter["R"] // 3
+
     # for every 2 F, get an F free
     counter["F"] -= counter["F"] // 3
 
-    # now process the multi-prices
-    # to work out a price for a letter with deals, apply the deal price with highest number of items
-    # then apply the deal price with the next highest number of items, and so on
+    # for every 3 U, get a U free
+    counter["U"] -= counter["U"] // 4
 
+    # now process the multi-prices
     total = 0
     for sku, count in counter.items():
         if sku not in multi:
@@ -97,3 +110,4 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
