@@ -6,6 +6,8 @@ from collections import Counter
 def checkout(skus):
     table = {"A": 50, "B": 30, "C": 20, "D": 15}
 
+    multi = {"A": [(5,  (3, 130)], "B": [(2, 45)]}
+
     # ..yep
     print(skus)
     counter = Counter([*skus])
@@ -18,6 +20,8 @@ def checkout(skus):
     # for every 2 E, get a B free
     counter["B"] -= counter["E"] // 2
 
+    # now process the multi-prices
+
     # 3A is 130
     total_a = (counter["A"] // 3) * 130 + (counter["A"] % 3) * table["A"]
 
@@ -27,4 +31,5 @@ def checkout(skus):
     total = total_a + total_b + counter["C"] * table["C"] + counter["D"] * table["D"]
 
     return total
+
 
