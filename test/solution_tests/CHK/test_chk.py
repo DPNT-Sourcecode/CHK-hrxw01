@@ -38,3 +38,8 @@ class TestCheckout:
     def test_empty(self):
         skus = ""
         assert checkout_solution.checkout(skus) == 0
+
+    def test_2f_get_free_f(self):
+        skus = "FF"
+        assert checkout_solution.checkout(skus) == 10
+
