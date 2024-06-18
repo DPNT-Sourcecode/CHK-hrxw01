@@ -103,6 +103,9 @@ def checkout(skus):
 
     total = 0
     for sku, count in counter.items():
+        if count <= 0:
+            continue
+
         if sku not in multi:
             total += count * table.get(sku, 0)
             continue
@@ -116,6 +119,7 @@ def checkout(skus):
             total += count * table[sku]
 
     return total
+
 
 
 
